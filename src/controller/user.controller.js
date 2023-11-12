@@ -1,15 +1,9 @@
-const express = require("express");
-const {
-  getAllData,
-  getDataById,
-  postData,
-  updateData,
-  deleteData,
-} = require("../service/user.service");
+const express = require('express');
+const { getAllData, getDataById, postData, updateData, deleteData, patchData } = require('../service/user.service');
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const data = await getAllData();
     res.status(200).send(data);
@@ -18,7 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const data = await getDataById(id);
@@ -28,7 +22,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { birth, city, age, name, surname } = req.body;
     const data = await postData(birth, city, age, name, surname);
@@ -38,7 +32,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { birth, city, age, name, surname } = req.body;
@@ -49,10 +43,21 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const data = await deleteData(id);
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+});
+
+router.patch('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const clientObj = req.body;
+    const data = await patchData(id, clientObj);
     res.status(200).send(data);
   } catch (error) {
     res.status(404).send(error.message);
