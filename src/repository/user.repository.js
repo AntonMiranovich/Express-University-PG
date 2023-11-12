@@ -64,7 +64,7 @@ async function patchDataDB(id, clientObj) {
       where users.id=$1`;
   const oldObj = (await client.query(sql, [id])).rows;
 
-  const newObj = { ...oldObj[0], ...clientObj[0] };
+  const newObj = { ...oldObj[0], ...clientObj };
 
   const sql1 = 'update users_info set birth=$1,city=$2,age=$3 where users_info.id=$4 returning *';
   const data1 = (await client.query(sql1, [newObj.birth, newObj.city, newObj.age, id])).rows;
